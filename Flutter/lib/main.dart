@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ListHeroes.dart';
+import 'list_heroes.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,12 +20,9 @@ class MyAppFirst extends State<MyApp> {
             backgroundColor: Colors.grey,
             appBar: null,
             body: Stack(fit: StackFit.expand, children: <Widget>[
-              // Container(
-              //   color: Colors.green,
-              // ),
               CustomPaint(
                   size: Size(200, 200),
-                  painter: DrawTriangle(_BG_Color_Widget)),
+                  painter: DrawTriangle(figColor: _BG_Color_Widget)),
               Column(children: [
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 65, vertical: 35),
@@ -51,11 +48,9 @@ class MyAppFirst extends State<MyApp> {
 
 //Для того чтобы нарисовать треугольник
 class DrawTriangle extends CustomPainter {
-  var Fig_Color = Colors.green;
+  var figColor;
 
-  DrawTriangle(var Set_Color) {
-    Fig_Color = Set_Color;
-  }
+  DrawTriangle({required this.figColor});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -64,7 +59,7 @@ class DrawTriangle extends CustomPainter {
     path.lineTo(0, size.height);
     path.lineTo(size.width, size.height);
     path.close();
-    canvas.drawPath(path, Paint()..color = Fig_Color);
+    canvas.drawPath(path, Paint()..color = figColor);
   }
 
   @override
