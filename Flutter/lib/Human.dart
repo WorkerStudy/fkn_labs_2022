@@ -1,4 +1,100 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
+class InfoHeroesApi {
+  final _publicKey = "01675a2a6b75d5593a99cc25ee00306c";
+  final _hash = "d359c2342dc4b50034e51a54e2379319";
+  int ts = 0;
+  Dio dio = new Dio();
+
+  requestListHeroes(int count) async {
+    List<int> idHeroes = [];
+    String url = "https://gateway.marvel.com:443/v1/public/characters?";
+
+    print(url);
+
+    try {
+      Response response = await dio.get(url, queryParameters: {
+        "ts": ts,
+        "apikey": _publicKey,
+        "hash": _hash,
+        "limit": count
+      });
+
+      for (var dataHero in response.data["data"]["results"]) {
+        idHeroes.add(dataHero["id"]);
+        print(dataHero["id"]);
+      }
+
+      return idHeroes;
+    } catch (e) {
+      print(e.toString());
+      print("Не удалось получить доступ");
+    }
+  }
+
+  requestInfoHeroes(int id) async {
+    String url =
+        "https://gateway.marvel.com:443/v1/public/characters/${id.toString()}?";
+
+    try {
+      Response response = await dio.get(url, queryParameters: {
+        "ts": ts.toString(),
+        "apikey": _publicKey,
+        "hash": _hash
+      });
+
+      var json = response.data["data"]["results"][0];
+
+      return Human.fromJson(json);
+    } catch (e) {
+      print(e.toString());
+      print("Не удалось получить доступ");
+      return Human.error(id: id, e: e);
+    }
+  }
+}
+
+class IdHumanProvider extends ChangeNotifier {
+  List<int>? idHeroes = null;
+  Object? error;
+  IdHumanProvider(int count) {
+    loadIdHeroes(count);
+  }
+
+  loadIdHeroes(int count) async {
+    List<int>? newHeroesId = await InfoHeroesApi().requestListHeroes(count);
+
+    print(newHeroesId);
+    idHeroes = newHeroesId;
+    notifyListeners();
+  }
+}
+
+class HumanProvider extends ChangeNotifier {
+  Map<int, Human> heroes = {};
+
+  loadHeroByID(int heroId) async {
+    try {
+      heroes[heroId] = await InfoHeroesApi().requestInfoHeroes(heroId);
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  loadListHeroesByID(List<int> listId) async {
+    heroes = {};
+    for (var id in listId) {
+      heroes[id] = await InfoHeroesApi().requestInfoHeroes(id);
+      notifyListeners();
+    }
+  }
+}
 
 //Стандартные стили текста
 const TextStyle titleStyle = const TextStyle(
@@ -9,58 +105,40 @@ const TextStyle subTitleStyle = const TextStyle(
 
 //Содержит в себе информацию о героях
 class Human {
-  final String name;
-  final Image imageHero;
-  final String info;
-  final Color figColors;
+  int? id;
+  String? name;
+  Image? imageHero;
+  String? info;
+  Color? figColors;
+  Object? e;
 
   Human(
-      {required this.name,
+      {required this.id,
+      required this.name,
       required this.imageHero,
       required this.info,
       this.figColors = Colors.green});
+
+  Human.fromJson(Map<String, dynamic> response) {
+    id = response['id'];
+    print(response['name']);
+    name = response['name'];
+    print(response['description']);
+    info = response['description'];
+    var pathimg = response['thumbnail']['path'] +
+        "." +
+        response['thumbnail']['extension'];
+
+    imageHero = Image.network(pathimg, errorBuilder:
+        (BuildContext context, Object exception, StackTrace? stackTrace) {
+      return Image.asset("assets/img/img_not_found.jpg", fit: BoxFit.cover);
+    }, fit: BoxFit.cover);
+
+    figColors = Colors.white;
+    e = null;
+  }
+
+  Human.error({required this.id, required this.e}) {
+    imageHero = Image.asset("assets/img/img_not_found.jpg", fit: BoxFit.cover);
+  }
 }
-
-final Image imghero = Image.asset("assets/img/ui.jpg");
-
-List<Human> heroes = [
-  Human(
-      name: "Юи Хирасава",
-      imageHero: Image.network(
-          "https://i.pinimg.com/736x/53/eb/23/53eb23e56606f4247c9e64730a5a9770.jpg",
-          errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return Image.asset("assets/img/ui.jpg", fit: BoxFit.cover);
-      }, fit: BoxFit.cover),
-      info: "Клубничка — это сердце тортика.",
-      figColors: Colors.green),
-  Human(
-      name: "Цумуги Котобуки",
-      imageHero: Image.network(
-          "https://mediaformasi.com/content/images/wordpress/2018/06/fb_img_1527315781425.jpg",
-          errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return Image.asset("assets/img/mugi.jpg", fit: BoxFit.cover);
-      }, fit: BoxFit.cover),
-      info: "Not Info",
-      figColors: Colors.blue),
-  Human(
-      name: "Мио Акияма",
-      imageHero: Image.network("https://i.imgur.com/MnOqJFw.jpg", errorBuilder:
-          (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return Image.asset("assets/img/mio.jpg", fit: BoxFit.cover);
-      }, fit: BoxFit.cover),
-      info: "Not Info",
-      figColors: Colors.orange),
-  Human(
-      name: "Рицу Тайнака",
-      imageHero: Image.network(
-          "https://animejoy.ru/uploads/posts/2018-01/1516637488_anime-keyon-2-sezon-k-on-smotret-onlayn-2.jpg",
-          errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return Image.asset("assets/img/ritsu.jpg", fit: BoxFit.cover);
-      }, fit: BoxFit.cover),
-      info:
-          "Что вершит судьбу человечества в этом мире? Некое незримое существо или закон....",
-      figColors: Colors.pink)
-];

@@ -17,7 +17,7 @@ class PosterHero extends StatelessWidget {
         Expanded(
             child: Stack(children: [
           SizedBox.expand(child: _hero.imageHero),
-          Padding(
+          const Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
               child: BackButton(
                 color: Colors.white,
@@ -33,13 +33,13 @@ class PosterHero extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                   child: Text(
-                    _hero.name,
+                    "${_hero.name}",
                     style: titleStyle,
                     textAlign: TextAlign.left,
                   ),
                 ),
                 Text(
-                  _hero.info,
+                  "${_hero.info}",
                   style: subTitleStyle,
                   textAlign: TextAlign.left,
                 )
