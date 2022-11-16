@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'id_human_provider.dart';
 import 'list_heroes.dart';
-import 'human.dart';
 
 void main() {
   //InfoHeroesNetWork().requestListHeroes(5);

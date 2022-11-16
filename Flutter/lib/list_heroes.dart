@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/card_hero.dart';
-import 'package:flutter_application_1/poster_hero.dart';
+
 import 'package:provider/provider.dart';
-import 'human.dart';
+
+import 'id_human_provider.dart';
 
 //Работа со списком героев (PageView)
 class ListHeroes extends StatelessWidget {
