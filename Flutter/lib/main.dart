@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'id_human_provider.dart';
 import 'list_heroes.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -15,35 +19,43 @@ class MyAppFirst extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    var listIdHeroes = Provider.of<List<int>?>(context);
     return MaterialApp(
-        home: Scaffold(
-            backgroundColor: Colors.grey,
-            appBar: null,
-            body: Stack(fit: StackFit.expand, children: <Widget>[
-              CustomPaint(
-                  size: const Size(200, 200),
-                  painter: DrawTriangle(figColor: _BG_Color_Widget)),
-              Column(children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 65, vertical: 35),
-                    child: Image.asset(
-                      "assets/logo/logo.png",
-                      height: 90,
-                      width: 350,
-                    )),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  child: Text(
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      "Выбери своего героя"),
-                ),
-                Expanded(child: ListHeroes())
-              ]),
-            ])));
+      home: Scaffold(
+          backgroundColor: Colors.grey,
+          appBar: null,
+          body: MultiProvider(
+              providers: [
+                ChangeNotifierProvider<IdHumanProvider>(
+                    create: (context) => IdHumanProvider(5)),
+                Provider<HumanProvider>(create: (context) => HumanProvider()),
+              ],
+              child: Stack(fit: StackFit.expand, children: <Widget>[
+                CustomPaint(
+                    size: const Size(200, 200),
+                    painter: DrawTriangle(figColor: _BG_Color_Widget)),
+                Column(children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 65, vertical: 35),
+                      child: Image.asset(
+                        "assets/logo/logo.png",
+                        height: 90,
+                        width: 350,
+                      )),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    child: Text(
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        "Выбери своего героя"),
+                  ),
+                  Expanded(child: ListHeroes())
+                ]),
+              ]))),
+    );
   }
 }
 

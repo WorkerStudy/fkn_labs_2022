@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
 import 'human.dart';
 
 class PosterHero extends StatelessWidget {
@@ -12,18 +13,18 @@ class PosterHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-        tag: _hero.name,
+        tag: {_hero.name},
         child: Scaffold(
           body: Stack(fit: StackFit.expand, children: [
             CachedNetworkImage(
-              imageUrl: _hero.urlImg,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(
-                Icons.warning,
-                color: Colors.red,
-              ),
-            ),
+                imageUrl: _hero.urlImg,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Image.asset(
+                      "assets/img/img_not_found.jpg",
+                      fit: BoxFit.cover,
+                    )),
             const Positioned(
               top: 25,
               left: 10,
