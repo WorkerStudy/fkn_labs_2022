@@ -10,6 +10,8 @@ class ListHeroes extends StatelessWidget {
   final PageController controller =
       PageController(initialPage: 0, viewportFraction: 0.80);
 
+  ListHeroes({super.key});
+
   @override
   Widget build(BuildContext context) {
     var listIdHeroes = Provider.of<IdHumanProvider>(context).idHeroes;

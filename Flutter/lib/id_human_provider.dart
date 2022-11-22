@@ -19,23 +19,20 @@ class IdHumanProvider extends ChangeNotifier {
   }
 }
 
-class HumanProvider extends ChangeNotifier {
+class HumanProvider {
   Map<int, Human> heroes = {};
 
-  loadHeroByID(int heroId) async {
+  Future<Human> loadHeroByID(int heroId) async {
+    if (heroes.containsKey(heroId)) {
+      return heroes[heroId]!;
+    }
+
     try {
       heroes[heroId] = await InfoHeroesApi().requestInfoHeroes(heroId);
     } catch (e) {
       print(e);
+      throw ("Невозможно загрузить героя");
     }
-    notifyListeners();
-  }
-
-  loadListHeroesByID(List<int> listId) async {
-    heroes = {};
-    for (var id in listId) {
-      heroes[id] = await InfoHeroesApi().requestInfoHeroes(id);
-      notifyListeners();
-    }
+    return heroes[heroId]!;
   }
 }

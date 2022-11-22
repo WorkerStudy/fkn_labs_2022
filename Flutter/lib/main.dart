@@ -4,7 +4,6 @@ import 'id_human_provider.dart';
 import 'list_heroes.dart';
 
 void main() {
-  //InfoHeroesNetWork().requestListHeroes(5);
   runApp(MyApp());
 }
 
@@ -19,12 +18,6 @@ class MyAppFirst extends State<MyApp> {
   Color _BG_Color_Widget = Colors.blue;
 
   @override
-  initState() {
-    super.initState();
-    print("Конструктор");
-  }
-
-  @override
   Widget build(BuildContext context) {
     var listIdHeroes = Provider.of<List<int>?>(context);
     return MaterialApp(
@@ -35,8 +28,7 @@ class MyAppFirst extends State<MyApp> {
               providers: [
                 ChangeNotifierProvider<IdHumanProvider>(
                     create: (context) => IdHumanProvider(5)),
-                ChangeNotifierProvider<HumanProvider>(
-                    create: (context) => HumanProvider()),
+                Provider<HumanProvider>(create: (context) => HumanProvider()),
               ],
               child: Stack(fit: StackFit.expand, children: <Widget>[
                 CustomPaint(
@@ -60,7 +52,7 @@ class MyAppFirst extends State<MyApp> {
                         ),
                         "Выбери своего героя"),
                   ),
-                  Container(child: Expanded(child: ListHeroes()))
+                  Expanded(child: ListHeroes())
                 ]),
               ]))),
     );

@@ -51,7 +51,7 @@ class InfoHeroesApi {
     } catch (e) {
       print(e.toString());
       print("Не удалось получить доступ");
-      return Human.error(id: id, e: e);
+      throw (e.toString());
     }
   }
 }
