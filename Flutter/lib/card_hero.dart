@@ -6,6 +6,7 @@ import 'human.dart';
 import 'id_human_provider.dart';
 import 'poster_hero.dart';
 
+
 class CardHero extends StatelessWidget {
   int _idHero;
   CardHero(this._idHero, {super.key});
@@ -72,5 +73,6 @@ class CardHero extends StatelessWidget {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) => PosterHero(hero),
     ));
+
   }
 }
