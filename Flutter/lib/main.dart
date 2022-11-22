@@ -21,17 +21,18 @@ class MyAppFirst extends State<MyApp> {
             appBar: null,
             body: Stack(fit: StackFit.expand, children: <Widget>[
               CustomPaint(
-                  size: Size(200, 200),
+                  size: const Size(200, 200),
                   painter: DrawTriangle(figColor: _BG_Color_Widget)),
               Column(children: [
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 65, vertical: 35),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 65, vertical: 35),
                     child: Image.asset(
                       "assets/logo/logo.png",
                       height: 90,
                       width: 350,
                     )),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Text(
                       style: TextStyle(
@@ -40,7 +41,7 @@ class MyAppFirst extends State<MyApp> {
                       ),
                       "Выбери своего героя"),
                 ),
-                Container(child: Expanded(child: ListHeroes()))
+                Expanded(child: ListHeroes())
               ]),
             ])));
   }

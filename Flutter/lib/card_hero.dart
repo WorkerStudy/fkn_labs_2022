@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/human.dart';
+import 'human.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CardHero extends StatelessWidget {
   Human _hero;
@@ -17,18 +17,28 @@ class CardHero extends StatelessWidget {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Stack(
+              fit: StackFit.expand,
               children: [
-                SizedBox.expand(child: _hero.imageHero),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Expanded(child: Container()),
-                  Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                      child: Text(
-                          style: titleStyle,
-                          textAlign: TextAlign.left,
-                          _hero.name)),
-                ])
+                CachedNetworkImage(
+                  imageUrl: _hero.urlImg,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.orange,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.warning,
+                    color: Colors.red,
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                  child: Text(
+                      style: titleStyle, textAlign: TextAlign.left, _hero.name),
+                )
               ],
             )));
   }
