@@ -1,35 +1,45 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/human.dart';
+import 'human.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CardHero extends StatelessWidget {
-  final Human _hero;
+  Human _hero;
 
   CardHero(this._hero);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        elevation: 0.6,
-        clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(_hero.pathAvatar), fit: BoxFit.fitHeight),
-            ),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(child: Container()),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+    return Hero(
+        tag: _hero.name,
+        child: Card(
+            elevation: 0.6,
+            clipBehavior: Clip.hardEdge,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: _hero.urlImg,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.orange,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.warning,
+                    color: Colors.red,
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
                   child: Text(
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
-                      _hero.name)),
-            ])));
+                      style: titleStyle, textAlign: TextAlign.left, _hero.name),
+                )
+              ],
+            )));
   }
 }

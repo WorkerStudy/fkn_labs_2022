@@ -1,38 +1,51 @@
 import 'package:flutter/material.dart';
 
+//Стандартные стили текста
+const TextStyle titleStyle =
+    TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold);
+
+const TextStyle subTitleStyle =
+    TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700);
+
 //Содержит в себе информацию о героях
 class Human {
   final String name;
-  final String pathAvatar;
+  final String urlImg;
   final String info;
   final Color figColors;
 
-  const Human(
+  Human(
       {required this.name,
-      required this.pathAvatar,
+      required this.urlImg,
       required this.info,
       this.figColors = Colors.green});
 }
 
+final Image imghero = Image.asset("assets/img/ui.jpg");
+
 List<Human> heroes = [
-  const Human(
+  Human(
       name: "Юи Хирасава",
-      pathAvatar: "assets/img/ui.jpg",
-      info: "Not Info",
+      urlImg:
+          "https://i.pinimg.com/736x/53/eb/23/53eb23e56606f4247c9e64730a5a9770.jpg",
+      info: "Клубничка — это сердце тортика.",
       figColors: Colors.green),
-  const Human(
+  Human(
       name: "Цумуги Котобуки",
-      pathAvatar: "assets/img/mugi.jpg",
+      urlImg:
+          "https://mediaformasi.com/content/images/wordpress/2018/06/fb_img_1527315781425.jpg",
       info: "Not Info",
       figColors: Colors.blue),
-  const Human(
+  Human(
       name: "Мио Акияма",
-      pathAvatar: "assets/img/mio.jpg",
+      urlImg: "https://i.imgur.com/MnOqJFw.jpg",
       info: "Not Info",
       figColors: Colors.orange),
-  const Human(
+  Human(
       name: "Рицу Тайнака",
-      pathAvatar: "assets/img/ritsu.jpg",
-      info: "Not Info",
+      urlImg:
+          "https://animejoy.ru/uploads/posts/2018-01/1516637488_anime-keyon-2-sezon-k-on-smotret-onlayn-2.jpg",
+      info:
+          "Что вершит судьбу человечества в этом мире? Некое незримое существо или закон....",
       figColors: Colors.pink)
 ];
